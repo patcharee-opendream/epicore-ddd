@@ -68,13 +68,21 @@ def test_create_rfi(requester):
     location = Location(name="Bangkok", lat=13.7563, lon=100.5018)
     responder_area = [Location(name="Korea", lat=35.9078, lon=127.7669), location]
 
-    recipient = Recipient(
+    recipient_1 = Recipient(
         first_name="Jane",
         last_name="Doe",
         email="jane@gmail.com",
         phone="0987654321",
         organization=Organization(name="epicore"),
     )
+    recipient_2 = Recipient(
+        first_name="John",
+        last_name="Doe",
+        email="john@gmail.com",
+        phone="1234567890",
+        organization=Organization(name="โรงพยาบาลกรุงเทพ"),
+    )
+
     sources = [
         Source(name="WHO", url="https://www.who.int/"),
         Source(name="CDC", url="https://www.cdc.gov/"),
@@ -89,7 +97,7 @@ def test_create_rfi(requester):
         location=location,
         responder_area=responder_area,
         requester=requester,
-        recipients=[recipient],
+        recipients=[recipient_1, recipient_2],
         outcome=RfiOutcome.UPDATED,
         affected_population=RfiAffectedPopulation.HUMAN,
         affected_population_text="",
@@ -103,7 +111,7 @@ def test_create_rfi(requester):
     assert rfi.location == location
     assert rfi.responder_area == responder_area
     assert rfi.requester == requester
-    assert rfi.recipients == [recipient]
+    assert rfi.recipients == [recipient_1, recipient_2]
     assert rfi.outcome == RfiOutcome.UPDATED
     assert rfi.affected_population == RfiAffectedPopulation.HUMAN
     assert rfi.affected_population_text == ""

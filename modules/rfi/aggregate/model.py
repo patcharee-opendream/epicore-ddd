@@ -113,7 +113,7 @@ class Rfi:
         sources: list[Source],
         syndromes: list[Syndrome],
     ) -> "Rfi":
-        return Rfi(
+        rfi = Rfi(
             id=RfiId.next_id(),
             title=title,
             date=date,
@@ -129,6 +129,9 @@ class Rfi:
             sources=sources,
             syndromes=syndromes,
         )
+
+        # TODO: send email to recipients
+        return rfi
 
     def close(self) -> None:
         self.status = RfiStatus.CLOSED
