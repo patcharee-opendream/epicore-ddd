@@ -138,3 +138,57 @@ class Rfi:
 
     def reopen(self) -> None:
         self.status = RfiStatus.REOPENED
+
+
+# =============
+# model Responder
+# =============
+class ResponderId(PositiveInt):
+    gt = 1
+
+    @staticmethod
+    def next_id() -> "ResponderId":
+        return seq.__next__()
+
+
+@dataclass
+class Responder:
+    id: ResponderId
+    first_name: str
+    last_name: str
+    email: str
+    phone: str
+
+    @staticmethod
+    def new_responder(
+        first_name: str,
+        last_name: str,
+        email: str,
+        phone: str,
+    ) -> "Responder":
+        return Responder(
+            id=ResponderId.next_id(),
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=phone,
+        )
+
+
+# =============
+# model Responder
+# =============
+class ResponseId(PositiveInt):
+    gt = 1
+
+    @staticmethod
+    def next_id() -> "ResponseId":
+        return seq.__next__()
+
+
+@dataclass
+class Response:
+    id: ResponseId
+    rfi: Rfi
+    date: datetime
+    responder: Responder
