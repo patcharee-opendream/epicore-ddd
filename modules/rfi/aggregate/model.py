@@ -9,6 +9,8 @@ from modules.rfi.value_objects import (
     Source,
     Syndrome,
 )
+from pydantic import PositiveInt
+from core.snowflake import seq
 
 
 class RfiStatus(Enum):
@@ -33,9 +35,17 @@ class RfiAffectedPopulation(Enum):
 # =============
 # model Requester
 # =============
+class RequesterId(PositiveInt):
+    gt = 1
+
+    @staticmethod
+    def next_id() -> "RequesterId":
+        return seq.__next__()
+
+
 @dataclass
 class Requester:
-    id: int
+    id: RequesterId
     first_name: str
     last_name: str
     email: str
@@ -51,7 +61,7 @@ class Requester:
         organization: Organization,
     ) -> "Requester":
         return Requester(
-            id=0,
+            id=RequesterId.next_id(),
             first_name=first_name,
             last_name=last_name,
             email=email,
@@ -63,9 +73,17 @@ class Requester:
 # =============
 # model RFI
 # =============
+class RfiId(PositiveInt):
+    gt = 1
+
+    @staticmethod
+    def next_id() -> "RfiId":
+        return seq.__next__()
+
+
 @dataclass
 class Rfi:
-    id: int
+    id: RfiId
     title: str
     date: datetime
     location: Location  # ตำแหน่งที่เกิดเหตุ
@@ -96,7 +114,7 @@ class Rfi:
         syndromes: list[Syndrome],
     ) -> "Rfi":
         return Rfi(
-            id=0,
+            id=RfiId.next_id(),
             title=title,
             date=date,
             location=location,
